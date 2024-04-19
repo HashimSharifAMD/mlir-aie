@@ -35,7 +35,7 @@ def my_eltwise_exp():
     with mlir_mod_ctx() as ctx:
 
         # Device declaration - aie2 device NPU (aka Ryzen AI)
-        @device(AIEDevice.ipu)
+        @device(AIEDevice.npu)
         def device_body():
 
             memRef_ty = T.memref(n, T.bf16())
@@ -113,13 +113,13 @@ def my_eltwise_exp():
 
             @FuncOp.from_py_func(tensor_ty, tensor_ty)
             def sequence(A, C):
-                ipu_dma_memcpy_nd(
+                npu_dma_memcpy_nd(
                     metadata="outC", bd_id=0, mem=C, sizes=[1, 1, 1, C_sz_in_i32s]
                 )
-                ipu_dma_memcpy_nd(
+                npu_dma_memcpy_nd(
                     metadata="inA", bd_id=1, mem=A, sizes=[1, 1, 1, A_sz_in_i32s]
                 )
-                ipu_sync(column=0, row=0, direction=0, channel=0)
+                npu_sync(column=0, row=0, direction=0, channel=0)
 
     # Print the mlir conversion
     print(ctx.module)

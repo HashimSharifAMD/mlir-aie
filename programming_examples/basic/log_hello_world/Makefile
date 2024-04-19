@@ -22,8 +22,8 @@ build/hello_world.mlir: hello_world.py
 
 build/hello_world.xclbin: build/hello_world.mlir build/kernel.o
 	mkdir -p ${@D}
-	cd ${@D} && aiecc.py --aie-generate-cdo --aie-generate-ipu --no-compile-host \
-		--xclbin-name=${@F} --ipu-insts-name=insts.txt $(<:%=../%)
+	cd ${@D} && aiecc.py --aie-generate-cdo --aie-generate-npu --no-compile-host \
+		--xclbin-name=${@F} --npu-insts-name=insts.txt $(<:%=../%)
 
 hello_world_elfstrings.csv: build/hello_world.xclbin
 	python3 elfStringParser.py --input ./build --output $@

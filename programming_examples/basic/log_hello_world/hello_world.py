@@ -15,7 +15,7 @@ def printf():
 
     with mlir_mod_ctx() as ctx:
 
-        @device(AIEDevice.ipu)
+        @device(AIEDevice.npu)
         def device_body():
             memRef_ty = T.memref(N, T.i32())
 
@@ -47,16 +47,16 @@ def printf():
             # To/from AIE-array data movement
             @FuncOp.from_py_func(memRef_ty, memRef_ty, memRef_ty)
             def sequence(in_mem, out_mem, logout):
-                ipu_dma_memcpy_nd(
+                npu_dma_memcpy_nd(
                     metadata="outOF", bd_id=0, mem=out_mem, sizes=[1, 1, 1, N]
                 )
-                ipu_dma_memcpy_nd(
+                npu_dma_memcpy_nd(
                     metadata="inOF", bd_id=1, mem=in_mem, sizes=[1, 1, 1, N]
                 )
-                ipu_dma_memcpy_nd(
+                npu_dma_memcpy_nd(
                     metadata="logoutOF", bd_id=2, mem=logout, sizes=[1, 1, 1, N]
                 )
-                ipu_sync(column=0, row=0, direction=0, channel=0)
+                npu_sync(column=0, row=0, direction=0, channel=0)
 
     print(ctx.module)
 

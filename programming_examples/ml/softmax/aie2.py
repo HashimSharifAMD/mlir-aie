@@ -32,7 +32,7 @@ def my_eltwise_add():
 
     with mlir_mod_ctx() as ctx:
 
-        @device(AIEDevice.ipu)
+        @device(AIEDevice.npu)
         def device_body():
             memRef_ty = T.memref(n, T.bf16())
 
@@ -109,13 +109,13 @@ def my_eltwise_add():
 
             @FuncOp.from_py_func(tensor_ty, tensor_ty)
             def sequence(A, C):
-                ipu_dma_memcpy_nd(
+                npu_dma_memcpy_nd(
                     metadata="outC", bd_id=0, mem=C, sizes=[1, 1, 1, C_sz_in_i32s]
                 )
-                ipu_dma_memcpy_nd(
+                npu_dma_memcpy_nd(
                     metadata="inA", bd_id=1, mem=A, sizes=[1, 1, 1, A_sz_in_i32s]
                 )
-                ipu_sync(column=0, row=0, direction=0, channel=0)
+                npu_sync(column=0, row=0, direction=0, channel=0)
 
     print(ctx.module)
 
