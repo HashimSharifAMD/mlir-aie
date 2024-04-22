@@ -7,7 +7,7 @@
 
 from aie.dialects.aie import *
 from aie.dialects.aiex import *
-from aie.extras.dialects.ext import memref, arith
+from aie.extras.dialects.ext import memref, arith, scf
 from aie.extras.dialects.ext.scf import range_, yield_
 from aie.extras.context import mlir_mod_ctx
 from aie.ir import MemRefType, TypeAttr
