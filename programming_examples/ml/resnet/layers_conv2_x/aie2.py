@@ -232,12 +232,12 @@ def bottleneck4AIEs():
             # 1x1 conv2d
             @core(ComputeTile2, "conv2dk1.o")
             def core_body():
-                for _ in range_(sys.maxsize):
+                for _ in for_(sys.maxsize):
 
                     # acquire weights once
                     element0Weights = of_wts_buf_00.acquire(ObjectFifoPort.Consume, 1)
                     scale = memref.load(rtpComputeTile2, [0])
-                    for _ in range_(tensorInH):
+                    for _ in for_(tensorInH):
                         element0ActivactionsIn = of_inOF_act_L3L2.acquire(
                             ObjectFifoPort.Consume, 1
                         )
@@ -268,7 +268,7 @@ def bottleneck4AIEs():
             @core(ComputeTile3, "conv2dk3.o")
             def core_body():
                 scale = 11
-                for _ in range_(sys.maxsize):
+                for _ in for_(sys.maxsize):
 
                     # acquire weights and rtps once
                     element0Weights = wts_buf_01.acquire(ObjectFifoPort.Consume, 1)
@@ -300,7 +300,7 @@ def bottleneck4AIEs():
                     objectfifo_release(ObjectFifoPort.Produce, "act_3_4", 1)
 
                     # middle
-                    for _ in range_(tensorInH - 2):
+                    for _ in for_(tensorInH - 2):
                         elementActivactionsIn = of_act_2_3_5.acquire(
                             ObjectFifoPort.Consume, 3
                         )
@@ -364,7 +364,7 @@ def bottleneck4AIEs():
             @core(ComputeTile5, "conv2dk3.o")
             def core_body():
                 scale = 11
-                for _ in range_(sys.maxsize):
+                for _ in for_(sys.maxsize):
 
                     # acquire weights and rtps once
                     element0Weights = wts_buf_01.acquire(ObjectFifoPort.Consume, 1)
@@ -397,7 +397,7 @@ def bottleneck4AIEs():
                     objectfifo_release(ObjectFifoPort.Produce, "act_5_4", 1)
 
                     # middle
-                    for _ in range_(tensorInH - 2):
+                    for _ in for_(tensorInH - 2):
                         elementActivactionsIn = of_act_2_3_5.acquire(
                             ObjectFifoPort.Consume, 3
                         )
@@ -458,14 +458,14 @@ def bottleneck4AIEs():
             # # 1x1 conv2d and add skip
             @core(ComputeTile4, "conv2dk1_skip.o")
             def core_body():
-                for _ in range_(sys.maxsize):
+                for _ in for_(sys.maxsize):
 
                     # acquire weights and rtps once
                     element0Weights = wts_buf_02.acquire(ObjectFifoPort.Consume, 1)
                     scale = memref.load(rtpComputeTile4, [0])
                     skipScale = memref.load(rtpComputeTile4, [1])
 
-                    for _ in range_(tensorInH):
+                    for _ in for_(tensorInH):
                         element0ActivactionsIn = act_3_4.acquire(
                             ObjectFifoPort.Consume, 1
                         )
